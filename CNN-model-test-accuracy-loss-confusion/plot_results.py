@@ -5,11 +5,11 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 
-# Eğitim geçmişini yükle
+# Load training history
 with open('history.pkl', 'rb') as f:
     history = pickle.load(f)
 
-# Kayıp Grafiği (Loss)
+# Loss Graph
 plt.figure(figsize=(12, 6))
 plt.plot(history['loss'], label='Training Loss')
 if 'val_loss' in history:
@@ -20,7 +20,7 @@ plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.show()
 
-# Doğruluk Grafiği (Accuracy)
+# Accuracy Graph
 plt.figure(figsize=(12, 6))
 plt.plot(history['accuracy'], label='Training Accuracy')
 if 'val_accuracy' in history:
@@ -31,10 +31,10 @@ plt.xlabel('Epochs')
 plt.ylabel('Accuracy')
 plt.show()
 
-# Modeli yükle
-model = load_model('fruit-model.h5')  # Doğru dosya adı
+# Load model
+model = load_model('fruit-model.h5')  # Correct file name
 
-# Test veri setini oluştur
+# Create test dataset
 test_dir = 'C:/Users/gulme/Downloads/fruit-dataset2/fruit-dataset/test'
 img_size = (224, 224)
 batch_size = 32
@@ -45,10 +45,10 @@ test_generator = test_datagen.flow_from_directory(
     target_size=img_size,
     batch_size=batch_size,
     class_mode='categorical',
-    shuffle=False  # Sıralı olması gerekli
+    shuffle=False  # It should be ordered
 )
 
-# Tahminleri al
+# Get predictions
 predictions = model.predict(test_generator)
 predicted_classes = np.argmax(predictions, axis=1)
 true_classes = test_generator.classes
